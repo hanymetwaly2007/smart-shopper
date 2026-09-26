@@ -1,4 +1,5 @@
 import os
+import urllib.parse
 import streamlit as st
 from google import genai
 from google.genai import types
@@ -27,8 +28,13 @@ if st.button("فحص العروض وأحدث موديل", use_container_width=Tr
 قم بتقديم تقرير استشاري دقيق وشامل:
 1. تحديد أحدث وأفضل إصدار عالمي متاح حالياً ومطابق لكهرباء 220V بتردد 50/60Hz.
 2. مسح ومقارنة الأسعار التقريبية في متاجر الرياض (أمازون السعودية، إكسترا، نون، ساكو).
-3. توضيح أي عروض شائعة أو نصائح للشراء.
-4. تقديم جدول مقارنة واضح وختم التقرير بنصيحة 'الصفقة الرابحة'."""
+3. تضمين روابط شراء واضحة ومباشرة وقابلة للنقر (Markdown links) للموديلات المقترحة، مثل:
+   - [شراء من أمازون السعودية](https://www.amazon.sa/s?k=اسم_الموديل)
+   - [شراء من نون](https://www.noon.com/saudi-ar/search/?q=اسم_الموديل)
+   - [شراء من إكسترا](https://www.extra.com/ar-sa/search/?q=اسم_الموديل)
+   - [شراء من ساكو](https://www.saco.sa/ar/search?text=اسم_الموديل)
+4. توضيح أي عروض شائعة أو نصائح للشراء.
+5. تقديم جدول مقارنة واضح وختم التقرير بنصيحة 'الصفقة الرابحة' مع رابط الشراء المباشر لها."""
 
                 try:
                     response = client.models.generate_content(
@@ -46,5 +52,22 @@ if st.button("فحص العروض وأحدث موديل", use_container_width=Tr
 
                 st.success("تم حصر البيانات بنجاح!")
                 st.markdown(response.text)
+
+                # أزرار الشراء المباشر السريعة
+                st.markdown("---")
+                st.markdown("### 🛍️ روابط سريعة للشراء المباشر من المتاجر:")
+                encoded_q = urllib.parse.quote(query)
+                col1, col2 = st.columns(2)
+                col3, col4 = st.columns(2)
+
+                with col1:
+                    st.link_button("🛒 أمازون السعودية (Amazon.sa)", f"https://www.amazon.sa/s?k={encoded_q}", use_container_width=True)
+                with col2:
+                    st.link_button("🟡 نون السعودية (Noon)", f"https://www.noon.com/saudi-ar/search/?q={encoded_q}", use_container_width=True)
+                with col3:
+                    st.link_button("🔵 إكسترا (eXtra)", f"https://www.extra.com/ar-sa/search/?q={encoded_q}", use_container_width=True)
+                with col4:
+                    st.link_button("🔴 ساكو (SACO)", f"https://www.saco.sa/ar/search?text={encoded_q}", use_container_width=True)
+
             except Exception as e:
                 st.error(f"حدث خطأ أثناء الفحص: {e}")
