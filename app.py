@@ -1,5 +1,4 @@
 import os
-import urllib.parse
 import streamlit as st
 from google import genai
 from google.genai import types
@@ -21,20 +20,19 @@ if st.button("فحص العروض وأحدث موديل", use_container_width=Tr
     elif not api_key:
         st.error("مفتاح API غير متوفر. يرجى إضافته في إعدادات الأسرار Secrets.")
     else:
-        with st.spinner("جاري مسح المتاجر وتحديث أحدث الأسعار في الرياض..."):
+        with st.spinner("جاري فحص المتاجر وجلب روابط الشراء المباشرة للمنتج..."):
             try:
                 client = genai.Client(api_key=api_key)
-                prompt = f"""المستخدم يريد شراء أو الاستفسار عن: {query}
-قم بتقديم تقرير استشاري دقيق وشامل:
-1. تحديد أحدث وأفضل إصدار عالمي متاح حالياً ومطابق لكهرباء 220V بتردد 50/60Hz.
-2. مسح ومقارنة الأسعار التقريبية في متاجر الرياض (أمازون السعودية، إكسترا، نون، ساكو).
-3. تضمين روابط شراء واضحة ومباشرة وقابلة للنقر (Markdown links) للموديلات المقترحة، مثل:
-   - [شراء من أمازون السعودية](https://www.amazon.sa/s?k=اسم_الموديل)
-   - [شراء من نون](https://www.noon.com/saudi-ar/search/?q=اسم_الموديل)
-   - [شراء من إكسترا](https://www.extra.com/ar-sa/search/?q=اسم_الموديل)
-   - [شراء من ساكو](https://www.saco.sa/ar/search?text=اسم_الموديل)
-4. توضيح أي عروض شائعة أو نصائح للشراء.
-5. تقديم جدول مقارنة واضح وختم التقرير بنصيحة 'الصفقة الرابحة' مع رابط الشراء المباشر لها."""
+                prompt = f"""المستخدم يريد شراء هذا المنتج: {query}
+قدم تقريراً استشارياً دقيقاً ومباشراً:
+1. حدد أفضل وأحدث جهازين في السوق متوافقين مع مواصفات السعودية (220-240V بتردد 50/60Hz).
+2. لكل جهاز ترشحه، اذكر:
+   - الاسم التجاري الكامل ورقم الموديل الدقيق بالإنجليزية (Model Number / SKU).
+   - أهم الميزات ولماذا هو الأفضل.
+   - روابط شراء مباشرة للسلعة المحددة بعينها (Direct Product Page) على المتاجر المتاحة (أمازون السعودية Amazon.sa، إكسترا eXtra، نون Noon).
+   - في حال استخدام رابط بحث المتجر، يجب أن يكون الرابط دقيقاً ومباشراً يحتوي على اسم الماركة ورقم الموديل بالإنجليزية فقط (مثال: https://www.amazon.sa/s?k=Ninja+AG551EU أو https://www.noon.com/saudi-ar/search/?q=Ninja+AG551) حتى يفتح صفحة هذا الجهاز بعينه مباشرة للمستخدم دون تشتت بين منتجات أخرى.
+3. جدول مقارنة بالأسعار التقريبية في متاجر الرياض اليوم.
+4. إعلان 'الصفقة الرابحة' مع رابط الشراء المباشر لها بشكل بارز."""
 
                 try:
                     response = client.models.generate_content(
@@ -50,24 +48,8 @@ if st.button("فحص العروض وأحدث موديل", use_container_width=Tr
                         contents=prompt
                     )
 
-                st.success("تم حصر البيانات بنجاح!")
+                st.success("تم حصر البيانات وتجهيز روابط الشراء المباشرة بنجاح!")
                 st.markdown(response.text)
-
-                # أزرار الشراء المباشر السريعة
-                st.markdown("---")
-                st.markdown("### 🛍️ روابط سريعة للشراء المباشر من المتاجر:")
-                encoded_q = urllib.parse.quote(query)
-                col1, col2 = st.columns(2)
-                col3, col4 = st.columns(2)
-
-                with col1:
-                    st.link_button("🛒 أمازون السعودية (Amazon.sa)", f"https://www.amazon.sa/s?k={encoded_q}", use_container_width=True)
-                with col2:
-                    st.link_button("🟡 نون السعودية (Noon)", f"https://www.noon.com/saudi-ar/search/?q={encoded_q}", use_container_width=True)
-                with col3:
-                    st.link_button("🔵 إكسترا (eXtra)", f"https://www.extra.com/ar-sa/search/?q={encoded_q}", use_container_width=True)
-                with col4:
-                    st.link_button("🔴 ساكو (SACO)", f"https://www.saco.sa/ar/search?text={encoded_q}", use_container_width=True)
 
             except Exception as e:
                 st.error(f"حدث خطأ أثناء الفحص: {e}")
