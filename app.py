@@ -32,7 +32,7 @@ if st.button("فحص العروض وأحدث موديل", use_container_width=Tr
                 4. تقديم جدول مقارنة واضح وختم التقرير بنصيحة 'الصفقة الرابحة'.
                 """
                 response = client.models.generate_content(
-                    model='gemini-2.0-flash',
+                    model='gemini-3.8-flash',
                     contents=prompt,
                     config=types.GenerateContentConfig(
                         tools=[types.Tool(google_search=types.GoogleSearch())]
