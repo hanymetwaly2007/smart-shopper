@@ -1,4 +1,5 @@
 import os
+import time
 import urllib.parse
 import streamlit as st
 from google import genai
@@ -21,10 +22,9 @@ if st.button("اعثر على أفضل صفقة ورابط الشراء المب
     elif not api_key:
         st.error("مفتاح API غير متوفر في الإعدادات.")
     else:
-        with st.spinner("جاري استخراج السلعة الفائزة ورابط الشراء المباشر..."):
-            try:
-                client = genai.Client(api_key=api_key)
-                prompt = f"""أنت مستشار مشتريات محترف في الرياض.
+        with st.spinner("جاري استخراج السلعة الفائزة ومواصفاتها..."):
+            client = genai.Client(api_key=api_key)
+            prompt = f"""أنت مستشار مشتريات محترف في الرياض.
 المستخدم يبحث عن: {query}
 
 المطلوب إجابة مختصرة ومركزة جداً بدون حشو:
@@ -32,35 +32,37 @@ if st.button("اعثر على أفضل صفقة ورابط الشراء المب
 2. اذكر اسمه التجاري الكامل ورقم الموديل الدقيق بالإنجليزية (Model Number).
 3. متوسط سعره بالريال السعودي اليوم في متاجر الرياض وأين يتوفر بأقل سعر.
 4. جملتين فقط عن أهم ميزاته ولماذا هو الخيار الأفضل.
-5. ضع رابطاً مباشراً لصفحة هذا المنتج بعينه على أمازون السعودية ونون وإكسترا."""
+5. توضيح الموديل البديل في حال عدم توفره."""
 
+            response = None
+            last_err = None
+
+            # محاولة الإرسال مع إعادة المحاولة التلقائية لتفادي ضغط السيرفرات (503)
+            for attempt in range(3):
                 try:
-                    response = client.models.generate_content(
-                        model='gemini-3.8-flash',
-                        contents=prompt,
-                        config=types.GenerateContentConfig(
-                            tools=[types.Tool(google_search=types.GoogleSearch())]
-                        )
-                    )
-                except Exception:
                     response = client.models.generate_content(
                         model='gemini-3.8-flash',
                         contents=prompt
                     )
+                    if response:
+                        break
+                except Exception as e:
+                    last_err = e
+                    time.sleep(2)  # انتظار ثانيتين ثم إعادة المحاولة تلقائياً
 
-                st.success("تم اختيار الصفقة الرابحة بدقة!")
+            if response:
+                st.success("تم تحديد أفضل صفقة مطابقة لمواصفات السعودية بنجاح!")
                 st.markdown(response.text)
 
-                # أزرار الشراء المباشرة الموجهة بدقة للمنتج
+                # روابط بحث دقيقة ومباشرة بمواصفات 220V
                 st.markdown("---")
-                st.markdown("#### 🛒 اضغط هنا لفتح صفحة المنتج مباشرة:")
+                st.markdown("#### 🛒 فتح صفحة المنتج للشراء فوراً:")
                 search_term = urllib.parse.quote(f"{query} 220V")
                 
                 col1, col2 = st.columns(2)
                 with col1:
-                    st.link_button("🟢 فتح المنتج في أمازون السعودية", f"https://www.amazon.sa/s?k={search_term}&ref=nb_sb_noss", use_container_width=True)
+                    st.link_button("🟢 شراء من أمازون السعودية", f"https://www.amazon.sa/s?k={search_term}", use_container_width=True)
                 with col2:
-                    st.link_button("🟡 فتح المنتج في نون السعودية", f"https://www.noon.com/saudi-ar/search/?q={search_term}", use_container_width=True)
-
-            except Exception as e:
-                st.error(f"حدث خطأ أثناء الفحص: {e}")
+                    st.link_button("🟡 شراء من نون السعودية", f"https://www.noon.com/saudi-ar/search/?q={search_term}", use_container_width=True)
+            else:
+                st.error(f"خوادم جوجل تشهد ضغطاً مؤقتاً، يرجى المحاولة بعد لحظات: {last_err}")
