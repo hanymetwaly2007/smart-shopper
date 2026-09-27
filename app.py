@@ -1,10 +1,10 @@
 import streamlit as st
 import urllib.parse
 
-# 1. إعداد الصفحة والكلمات المفتاحية لمحركات البحث (SEO)
+# 1. العنوان الموجه لأكثر الكلمات بحثاً في محركات البحث (SEO Title)
 st.set_page_config(
-    page_title="رادار الصفقات KSA | مقارنة أسعار الأجهزة المنزلية وعروض البنوك السعودية",
-    page_icon="🎯",
+    page_title="أقوى عروض وتخفيضات الأجهزة المنزلية في السعودية | مقارنة الأسعار وخصم البنوك",
+    page_icon="🔥",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -24,15 +24,15 @@ st.markdown("""
     }
     
     .seo-banner {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        border: 1px solid #dee2e6;
+        background: linear-gradient(135deg, #fff8f0 0%, #fff0e0 100%);
+        border: 1px solid #ffe0b2;
         border-right: 5px solid #ff9900;
-        padding: 15px;
+        padding: 16px;
         border-radius: 10px;
         margin-bottom: 25px;
         font-size: 0.95rem;
-        color: #495057;
-        line-height: 1.6;
+        color: #333;
+        line-height: 1.7;
     }
 
     .product-box {
@@ -119,14 +119,14 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 3. ترويسة الموقع والنص التعريفي المخصص للأرشفة (SEO Indexing)
-st.title("🎯 رادار الصفقات الذكي وعروض البنوك | KSA")
+# 3. العنوان الرئيسي والنص التعريفي الغني بالكلمات الأكثر بحثاً
+st.title("🔥 أقوى عروض وتخفيضات الأجهزة الكهربائية والمنزلية في السعودية")
 
 st.markdown("""
 <div class="seo-banner">
-    <b>دليلك المعتمد للتسوق ومقارنة الأسعار في المملكة العربية السعودية:</b> 
-    محرك بحث لمطابقة مواصفات الأجهزة الكهربائية والمنزلية (قلايات هوائية، غسالات صحون، أجهزة مطبخ) 
-    مع مواصفات الهيئة السعودية للمواصفات والمقاييس (SASO)، واحتساب الخصومات التلقائية لبطاقات بنك الراجحي، الأهلي SNB، الفرنسي BSF، والإنماء، لمقارنة أسعار أمازون السعودية، نون، وإكسترا بأفضل قيمة شراء.
+    <b>دليلك الذكي لأفضل عروض وتخفيضات الأجهزة في السعودية:</b> 
+    مقارنة دقيقة وشاملة لأفضل الأجهزة المنزلية (قلايات هوائية، غسالات أطباق، أجهزة مطبخ) ومطابقة مواصفات الجودة السعودية SASO. 
+    نبحث لك عن أقل سعر في <b>أمازون السعودية، نون، وإكسترا</b>، مع حساب الخصم المباشر لبطاقات <b>مصرف الراجحي، البنك الأهلي SNB، البنك السعودي الفرنسي BSF، ومصرف الإنماء</b> لنضمن لك أقوى صفقة توفير.
 </div>
 """, unsafe_allow_html=True)
 
@@ -139,8 +139,8 @@ col_search, col_bank = st.columns([3, 2])
 
 with col_search:
     search_query = st.text_input(
-        "🔎 ما الجهاز أو السلعة التي ترغب بمقارنتها؟",
-        value="قلاية هوائية دبل زون",
+        "🔎 ابحث عن الجهاز للمقارنة واكتشاف أقوى خصم:",
+        value="أفضل قلاية هوائية دبل زون",
         placeholder="مثال: غسالة صحون بوش، قلاية نينجا، شاشة 65 بوصة..."
     )
 
@@ -158,7 +158,7 @@ with col_bank:
         ]
     )
 
-analyze_btn = st.button("🚀 فحص المواصفات ومقارنة العروض الآن", type="primary", use_container_width=True)
+analyze_btn = st.button("🚀 فحص المواصفات واستخراج أقوى عرض وتخفيض", type="primary", use_container_width=True)
 
 # 6. قسم النتائج والتحليل الفني الشامل
 if analyze_btn or search_query:
@@ -209,35 +209,34 @@ if analyze_btn or search_query:
     st.markdown("---")
 
     # رابعاً: جدول المقارنة الفني الشامل
-    st.subheader("رابعاً: جدول المقارنة الفني الشامل")
+    st.subheader("رابعاً: جدول المقارنة الفني الشامل (أفضل قلاية هوائية في السعودية)")
     st.markdown("""
 | اسم الموديل | السعة الفعالة | القوة الكهربائية | التقنية الأبرز | متوسط السعر المتداول | الميزة التنافسية الحصرية |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Philips Combi 7000 (HD9880)** | 8.3 لتر (منطقة واحدة) | 2200 واط | الذكاء الاصطناعي ومسبار الحرارة | 1,599 ر.س | أدق استواء للحوم بفضل المسبار الذكي والاتصال بالإنترنت |
-| **Ninja FlexBasket (AF500ME)** | 10.4 لتر (1 أو 2 درج) | 2470 واط | التحويل الذكي للمساحة FlexBasket | 899 ر.س (عرض حالي) | مرونة غير محدودة لطهي وجبات عائلية ضخمة أو صنفين منفصلين |
+| **Ninja FlexBasket (AF500ME)** | 10.4 لتر (1 أو 2 درج) | 2470 واط | التحويل الذكي للمساحة FlexBasket | 899 ر.س (تخفيض حالي) | مرونة غير محدودة لطهي وجبات عائلية ضخمة أو صنفين منفصلين |
 | **Instant Vortex Dual (140-3095)** | 7.6 لتر (درجين منفصلين) | 1700 واط | فلاتر الكربون ومنع الروائح | 749 ر.س | بيئة مطبخ خالية من الروائح مع إمكانية مراقبة الطعام بالكامل |
 """)
 
     st.markdown("---")
 
     # خامساً: الصفقة الرابحة الحاسمة
-    st.subheader("خامساً: الصفقة الرابحة الحاسمة (Best Value)")
+    st.subheader("خامساً: أقوى صفقة رابحة وتخفيض (أفضل قيمة مقابل السعر)")
     
     target_product = "Ninja Foodi FlexBasket 10.4L (AF500ME)"
-    base_price = 899  # السعر المحدث طبقاً لعروض أمازون الحالية
+    base_price = 899  # السعر المحدث طبقاً لعروض أمازون
 
-    # معالجة خصومات البنوك
     if "جميع البنوك" in selected_bank:
         st.markdown(f"""
         <div class="deal-card">
-            <h4 style="color: #28a745; margin-top: 0;">🏆 الفائز بأفضل قيمة مقابل السعر: {target_product}</h4>
-            <p>السعر الأساسي الحالي في أمازون: <b>{base_price} ريال</b> (تخفيض اليوم الوطني 40%).</p>
-            <p><b>جدول مقارنة أسعار السلعة بحسب بطاقتك البنكية:</b></p>
+            <h4 style="color: #28a745; margin-top: 0;">🏆 الفائز بأقوى عرض وتخفيض: {target_product}</h4>
+            <p>السعر الأساسي الحالي في أمازون: <b>{base_price} ريال</b> (تخفيض هائل بنسبة 40%).</p>
+            <p><b>جدول مقارنة الأسعار بحسب خصومات بطاقات البنوك السعودية:</b></p>
             <table style="width:100%; border-collapse: collapse; text-align: right; margin-bottom: 15px;">
                 <tr style="background-color: #e8f5e9;">
                     <th style="padding: 8px; border: 1px solid #c8e6c9;">البنك / البطاقة</th>
                     <th style="padding: 8px; border: 1px solid #c8e6c9;">كود / تفاصيل الخصم</th>
-                    <th style="padding: 8px; border: 1px solid #c8e6c9;">السعر النهائي التقريبي</th>
+                    <th style="padding: 8px; border: 1px solid #c8e6c9;">السعر النهائي بعد التخفيض</th>
                 </tr>
                 <tr>
                     <td style="padding: 8px; border: 1px solid #ddd;"><b>البنك السعودي الفرنسي BSF</b></td>
@@ -270,7 +269,6 @@ if analyze_btn or search_query:
         net_price = 799
         discount_desc = "خصومات البنوك المتعددة حتى 150 ريال"
     else:
-        # حساب خصم بنك مفرد
         discount_val = 0
         if "BSF" in selected_bank or "الفرنسي" in selected_bank or "الراجحي" in selected_bank or "الأهلي" in selected_bank:
             discount_val = 100
@@ -284,9 +282,9 @@ if analyze_btn or search_query:
 
         st.markdown(f"""
         <div class="deal-card">
-            <h4 style="color: #28a745; margin-top: 0;">🏆 الفائز بأفضل قيمة مقابل السعر: {target_product}</h4>
+            <h4 style="color: #28a745; margin-top: 0;">🏆 الفائز بأقوى عرض وتخفيض: {target_product}</h4>
             <ul>
-                <li><b>السعر في عرض اليوم الوطني:</b> {base_price} ريال سعودي (بدلاً من 1,499 ريال).</li>
+                <li><b>السعر في التخفيضات الحالية:</b> {base_price} ريال سعودي (بدلاً من 1,499 ريال).</li>
                 <li><b>السعر الصافي التقريبي بعد خصم البنك:</b> <span style="font-size: 1.3rem; font-weight: 800; color: #d93025;">{net_price} ريال سعودي</span> ({discount_desc}).</li>
                 <li><b>ملاحظة:</b> إذا كنت تستخدم بطاقة الفرنسي BSF مع برايم استخدم كود <code>BSF25</code> لخصم 150 ريال.</li>
             </ul>
@@ -298,13 +296,13 @@ if analyze_btn or search_query:
     amazon_affiliate_url = f"https://www.amazon.sa/s?k={encoded_search}&tag={AMAZON_TAG}"
     noon_url = f"https://www.noon.com/saudi-ar/search/?q={encoded_search}"
     
-    wa_message = f"""🎯 وجدت لك أفضل صفقة جهاز منزلي في عروض اليوم الوطني بأمازون!
+    wa_message = f"""🔥 أقوى عروض وتخفيضات الأجهزة المنزلية بأمازون السعودية!
 
 الجهاز: {target_product}
-السعر بالعرض: {base_price} ريال (بدلاً من 1,499 ريال)
+السعر بالعرض: {base_price} ريال (وفرت 40%)
 السعر بعد خصم البنك: يصل إلى {net_price} ريال تقريباً!
 
-فحص ومقارنة المواصفات من رادار الصفقات:
+فحص ومقارنة العروض والخصومات:
 {APP_URL}
 
 رابط الشراء المباشر من أمازون:
