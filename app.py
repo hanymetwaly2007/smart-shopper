@@ -126,8 +126,8 @@ st.title("🔥 أقوى عروض وتخفيضات الأجهزة الكهربا�
 
 st.markdown("""
 <div class="seo-banner">
-    <b>دليلك الذكي لأفضل عروض وتخفيضات الأجهزة في السعودية:</b> 
-    محرك بحث ذكي يفحص لك أي جهاز أو أداة منزلية (قلايات، عجانات، خلاطات، غسالات، قدور طهي، ثلاجات، مكانس، شاشات) ويستخرج لك أعلى جودة وأحدث إصدار مطابق لمواصفات SASO السعودية مع حساب الخصم الفوري لبطاقات <b>مصرف الراجحي، البنك الأهلي SNB، الفرنسي BSF، ومصرف الإنماء</b>.
+    <b>دليلك الذكي لأفضل عروض وتخفيضات أدوات المطبخ والأجهزة المنزلية:</b> 
+    محرك بحث ذكي يقارن لك بين أفضل الماركات الأصلية (كركوماز، كينوود، نينجا، بوش، تيفال، فيليبس) بمواصفات الجودة السعودية SASO مع حساب الخصم الفوري لبطاقات <b>مصرف الراجحي، البنك الأهلي SNB، الفرنسي BSF، ومصرف الإنماء</b>.
 </div>
 """, unsafe_allow_html=True)
 
@@ -142,25 +142,27 @@ if "active_query" not in st.session_state:
 def quick_select(term):
     st.session_state.active_query = term
 
-# أزرار تنقل سريع لأشهر الفئات المطلوبة
-st.markdown("**⚡ فئات سريعة للأجهزة الأكثر طلباً في السعودية (أو اكتب أي جهاز بالأسفل):**")
-c1, c2, c3, c4 = st.columns(4)
+# أزرار تنقل سريع لأشهر الفئات المطلوبة في السعودية
+st.markdown("**⚡ فئات سريعة بنقرة واحدة:**")
+c1, c2, c3, c4, c5 = st.columns(5)
 with c1:
-    st.button("🥣 عجانات ومحاضن عجين", on_click=quick_select, args=("عجانة كهربائية",), use_container_width=True)
+    st.button("🍳 أطقم قدور ستانلس ستيل", on_click=quick_select, args=("طقم اواني استيل",), use_container_width=True)
 with c2:
-    st.button("🍟 قلايات هوائية دبل زون", on_click=quick_select, args=("قلاية هوائية",), use_container_width=True)
+    st.button("🥣 عجانات كينوود", on_click=quick_select, args=("عجانة كهربائية",), use_container_width=True)
 with c3:
-    st.button("🥤 خلاطات ومحضرات طعام", on_click=quick_select, args=("خلاط كهربائي",), use_container_width=True)
+    st.button("🍟 قلايات هوائية", on_click=quick_select, args=("قلاية هوائية",), use_container_width=True)
 with c4:
+    st.button("🥤 خلاطات ومحضرات طعام", on_click=quick_select, args=("خلاط كهربائي",), use_container_width=True)
+with c5:
     st.button("🍽️ غسالات صحون", on_click=quick_select, args=("غسالة صحون",), use_container_width=True)
 
 col_search, col_bank = st.columns([3, 2])
 
 with col_search:
     search_input = st.text_input(
-        "🔎 ابحث عن أي جهاز أو أداة منزلية تريد فحصها ومقارنة أسعارها:",
+        "🔎 ابحث عن أي جهاز أو أداة منزلية تريد فحصها ومقارنة أسعارها وماركاتها:",
         value=st.session_state.active_query,
-        placeholder="مثال: عجانة، مكنسة دايسون، مكرويف، ثلاجة، طقم قدور جرانيت، كواية بخار..."
+        placeholder="مثال: طقم اواني استيل، عجانة، قلاية هوائية، خلاط، مكنسة، كواية بخار..."
     )
 
 with col_bank:
@@ -179,19 +181,68 @@ with col_bank:
 
 analyze_btn = st.button("🚀 فحص أفضل الماركات واستخراج أقوى عرض وتخفيض", type="primary", use_container_width=True)
 
-# 6. المحرك الذكي: فحص أي كلمة مدخلة وتوليد أفضل الماركات وأحدث الإصدارات
+# 6. المحرك الذكي: فحص الكلمة المبحوث عنها وتوليد أفضل الماركات الأصلية
 raw_query = search_input.strip()
 query = raw_query.lower()
 
 if not raw_query:
-    st.info("👆 اكتب اسم أي جهاز أو أداة منزلية في مربع البحث بالأعلى، وسيستخرج لك المحرك الذكي أفضل وأحدث الموديلات في السوق السعودي مباشرة.")
+    st.info("👆 اكتب اسم أي جهاز أو أداة منزلية (مثلاً: طقم اواني استيل، عجانة، قلاية هوائية) لتظهر لك الماركات الأصلية بالصور والمواصفات.")
 else:
-    # الفئة 1: العجانات
-    if any(w in query for w in ["عجان", "عجين", "مخبوزات", "كينوود شيف"]):
+    # الفئة 1: أطقم أواني الطهي والستانلس ستيل والقدور
+    if any(w in query for w in ["اواني", "أواني", "استيل", "ستانلس", "كركوماز", "قدور", "قدر", "حلل", "جرانيت", "تيفال"]):
+        cat_title = "أفضل أطقم قدور ستانلس ستيل أصلية 18/10 في السعودية"
+        p1 = {
+            "tier": "الفئة الأولى: الماركة التركية رقم 1 في السعودية (الأعلى طلباً وجودة)",
+            "title": "أولاً: طقم قدور كركوماز أسترا ستانلس ستيل 9 قطع - تركي أصلي (Korkmaz Astra A1900)",
+            "price": "السعر الحالي في عروض أمازون: 459 ريال سعودي (بدلاً من 620)",
+            "img": "https://m.media-amazon.com/images/I/61Nl-XhJ5cL._AC_SL1500_.jpg",
+            "specs": [
+                "<b>معدن الصنع:</b> ستانلس ستيل فائق النقاء من الكروم والنيكل عيار 18/10 Cr-Ni المقاوم للصدأ وتغير اللون مدى الحياة.",
+                "<b>القاعدة والتوزيع الحراري:</b> قاعدة كبسولية ثلاثية سميكة (Solar Base) تحبس وتوزع الحرارة بالتساوي وتمنع حرق وقاع الطعام مع توفير 30% من الطاقة.",
+                "<b>المقابض والأغطية:</b> مقابض ستانلس ستيل مريحة ملحومة بعناية وعازلة للحرارة، مع أغطية محكمة تحتفظ بنكهة البخار والعصارة داخل القدر.",
+                "<b>التوافق:</b> متوافق مع كافة أنواع المواقد (غاز، كهرباء، سيراميك، والحث الكهرومغناطيسي Induction) وآمن تماماً في غسالة الأطباق.",
+                "<b>التقييم:</b> طقم العمر الذهبي في المطبخ؛ لا يتفاعل مع الأحماض أو الطماطم ويدوم لسنوات طويلة بنفس اللمعان."
+            ]
+        }
+        p2 = {
+            "tier": "الفئة العالمية: الاعتمادية الفرنسية الشهيرة",
+            "title": "ثانياً: طقم قدور تيفال إنتويشن ستانلس ستيل 10 قطع (Tefal Intuition A702SC84)",
+            "price": "متوسط السعر المتداول: 549 ريال سعودي",
+            "img": "https://m.media-amazon.com/images/I/71R2h7wWw1L._AC_SL1500_.jpg",
+            "specs": [
+                "<b>الخامات:</b> ستانلس ستيل عالي الجودة 18/10 بضمان تيفال العالمي لمدة 5 سنوات.",
+                "<b>الميزات الحصرية:</b> علامات قياس داخلية واضحة لتسهيل إضافة السوائل وحواف صب مخصصة تمنع تسرب المرق خارج الإناء.",
+                "<b>الأغطية:</b> أغطية زجاجية مقواة بفتحة لتصريف البخار الزائد دون فوران السوائل.",
+                "<b>التقييم:</b> خيار أنيق للمطابخ الحديثة مع سهولة مراقبة استواء الطعام عبر الغطاء الزجاجي."
+            ]
+        }
+        p3 = {
+            "tier": "الفئة الكلاسيكية العملية",
+            "title": "ثالثاً: طقم قدور كركوماز تومبيك 9 قطع (Korkmaz Tombik A1800)",
+            "price": "متوسط السعر المتداول: 389 ريال سعودي",
+            "img": "https://m.media-amazon.com/images/I/61lD5LrqVHL._AC_SL1500_.jpg",
+            "specs": [
+                "<b>التصميم:</b> شكل كروي دائري أنيق يتيح تقليب أسهل للمرق والصلصات مع قاعدة حرارية متطورة.",
+                "<b>الخامات:</b> ستانلس ستيل 18/10 تركي مع مقابض دائرية ناعمة.",
+                "<b>التقييم:</b> أفضل خيار اقتصادي يجمع جودة كركوماز الأصلية مع تصميم جذاب وتكلفة ممتازة."
+            ]
+        }
+        table_md = """
+| اسم الموديل | عدد القطع | خامة الستانلس ستيل | نوع القاعدة | متوسط السعر | الميزة الأبرز |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Korkmaz Astra (A1900)** | 9 قطع كاملة | Cr-Ni 18/10 أصلي | Solar Base ثلاثية عريضة | 459 ر.س (تخفيض حالي) | الطقم الأكثر شهرة واعتمادية، لا يحرق الطعام ويدوم طويلاً |
+| **Tefal Intuition** | 10 قطع | ستانلس ستيل 18/10 | قاعدة سميكة مانعة للتشوه | 549 ر.س | علامات قياس داخلية وأغطية زجاجية مقواة |
+| **Korkmaz Tombik** | 9 قطع | Cr-Ni 18/10 كروي | قاعدة حرارية متساوية | 389 ر.س | تصميم دائري كلاسيكي وسعر اقتصادي ممتاز |
+"""
+        winner_name = "Korkmaz Astra 9 Pcs Stainless Steel Cookware Set (A1900)"
+        base_price = 459
+
+    # الفئة 2: العجانات المنزلية والاحترافية
+    elif any(w in query for w in ["عجان", "عجانه", "عجين", "مخبوزات", "كينوود"]):
         cat_title = "أفضل عجانات كهربائية منزلية في السعودية"
         p1 = {
             "tier": "الفئة الأولى: الأعلى متانة والأكثر طلباً بالسعودية",
-            "title": "Kenwood Chef XL Stand Mixer 1200W (KVL4100S)",
+            "title": "أولاً: Kenwood Chef XL Stand Mixer 1200W (KVL4100S)",
             "price": "السعر الحالي بعروض أمازون: 1,399 ريال (بدلاً من 1,899)",
             "img": "https://m.media-amazon.com/images/I/61bW6f2vA8L._AC_SL1200_.jpg",
             "specs": [
@@ -203,7 +254,7 @@ else:
         }
         p2 = {
             "tier": "الفئة الاحترافية: أيقونة المخابز والتصميم العالمي",
-            "title": "KitchenAid Artisan Stand Mixer 4.8L (5KSM150)",
+            "title": "ثانياً: KitchenAid Artisan Stand Mixer 4.8L (5KSM150)",
             "price": "متوسط السعر المتداول: 2,199 ريال سعودي",
             "img": "https://m.media-amazon.com/images/I/71uXj6o1DUL._AC_SL1500_.jpg",
             "specs": [
@@ -214,7 +265,7 @@ else:
         }
         p3 = {
             "tier": "الفئة الذكية والمتكاملة: الأفضل قيمة ومساحة",
-            "title": "Bosch MUM5 Kitchen Machine 1000W (MUM58243)",
+            "title": "ثالثاً: Bosch MUM5 Kitchen Machine 1000W (MUM58243)",
             "price": "متوسط السعر المتداول: 799 ريال سعودي",
             "img": "https://m.media-amazon.com/images/I/71m7C+sZ8lL._AC_SL1500_.jpg",
             "specs": [
@@ -233,12 +284,12 @@ else:
         winner_name = "Kenwood Chef XL Stand Mixer 1200W"
         base_price = 1399
 
-    # الفئة 2: الخلاطات ومحضرات الطعام
+    # الفئة 3: الخلاطات ومحضرات الطعام
     elif any(w in query for w in ["خلاط", "محضر", "بلندر", "براون", "عصارة"]):
         cat_title = "أفضل خلاطات ومحضرات طعام في السعودية"
         p1 = {
             "tier": "الفئة الشاملة: الأكثر قوة وتنوعاً في جهاز واحد",
-            "title": "Ninja Foodi 3-in-1 Food Processor & Blender (BN800ME)",
+            "title": "أولاً: Ninja Foodi 3-in-1 Food Processor & Blender (BN800ME)",
             "price": "السعر الحالي في عروض أمازون: 649 ريال (بدلاً من 899)",
             "img": "https://m.media-amazon.com/images/I/71mZc+k+1oL._AC_SL1500_.jpg",
             "specs": [
@@ -249,7 +300,7 @@ else:
         }
         p2 = {
             "tier": "الفئة الاحترافية: الخفاق اليدوي الأكثر كفاءة عالمياً",
-            "title": "Braun MultiQuick 9 Hand Blender (MQ9147X)",
+            "title": "ثانياً: Braun MultiQuick 9 Hand Blender (MQ9147X)",
             "price": "متوسط السعر المتداول: 599 ريال سعودي",
             "img": "https://m.media-amazon.com/images/I/61kMv-2sBBL._AC_SL1500_.jpg",
             "specs": [
@@ -260,7 +311,7 @@ else:
         }
         p3 = {
             "tier": "الفئة الاقتصادية المعتمدة",
-            "title": "Philips Core Series 5000 (HR3573)",
+            "title": "ثالثاً: Philips Core Series 5000 (HR3573)",
             "price": "متوسط السعر المتداول: 289 ريال سعودي",
             "img": "https://m.media-amazon.com/images/I/71dM87L0a1L._AC_SL1500_.jpg",
             "specs": [
@@ -278,12 +329,12 @@ else:
         winner_name = "Ninja Foodi 3-in-1 Blender & Food Processor (BN800ME)"
         base_price = 649
 
-    # الفئة 3: غسالات الصحون
+    # الفئة 4: غسالات الصحون
     elif any(w in query for w in ["غسالة صحون", "جلاية", "صحون", "اطباق", "غساله صحون"]):
         cat_title = "أفضل غسالات صحون في السعودية ومطابقة مواصفات SASO"
         p1 = {
             "tier": "الفئة الأولى: الأعلى كفاءة والأطول عمراً",
-            "title": "Bosch Serie 4 Freestanding Dishwasher (SMS46GI01E)",
+            "title": "أولاً: Bosch Serie 4 Freestanding Dishwasher (SMS46GI01E)",
             "price": "متوسط السعر المتداول: 2,499 ريال سعودي",
             "img": "https://m.media-amazon.com/images/I/61hX0R2aV+L._AC_SL1500_.jpg",
             "specs": [
@@ -294,7 +345,7 @@ else:
         }
         p2 = {
             "tier": "الفئة الأكثر مبيعاً: أعلى قيمة مقابل السعر",
-            "title": "Midea 14 Place Settings Freestanding (WQP14J7633)",
+            "title": "ثانياً: Midea 14 Place Settings Freestanding (WQP14J7633)",
             "price": "السعر الحالي في عروض أمازون: 1,299 ريال (بدلاً من 1,699)",
             "img": "https://m.media-amazon.com/images/I/61E1N8P1rNL._AC_SL1500_.jpg",
             "specs": [
@@ -305,7 +356,7 @@ else:
         }
         p3 = {
             "tier": "الفئة الاقتصادية العملية",
-            "title": "Beko 14 Place Settings Dishwasher (DFN05320W)",
+            "title": "ثالثاً: Beko 14 Place Settings Dishwasher (DFN05320W)",
             "price": "متوسط السعر المتداول: 1,149 ريال سعودي",
             "img": "https://m.media-amazon.com/images/I/61b7Q5YgZRL._AC_SL1500_.jpg",
             "specs": [
@@ -323,12 +374,12 @@ else:
         winner_name = "Midea 14 Place Settings Dishwasher"
         base_price = 1299
 
-    # الفئة 4: القلايات الهوائية
+    # الفئة 5: القلايات الهوائية
     elif any(w in query for w in ["قلاية", "قلايه", "هوائية", "هوائيه", "ايرفراير"]):
         cat_title = "أفضل قلاية هوائية في السعودية"
         p1 = {
             "tier": "الفئة الرائدة: المرونة الأعلى والسعة الأكبر",
-            "title": "Ninja Foodi FlexBasket 10.4L (AF500ME)",
+            "title": "أولاً: Ninja Foodi FlexBasket 10.4L (AF500ME)",
             "price": "السعر الحالي بأمازون (عرض التخفيضات): 899 ريال (بدلاً من 1,499)",
             "img": "https://m.media-amazon.com/images/I/81x12B3h6UL._AC_SL1500_.jpg",
             "specs": [
@@ -339,7 +390,7 @@ else:
         }
         p2 = {
             "tier": "الفئة التقنية الذكية: دقة الطهي بالمسبار الحراري",
-            "title": "Philips Combi 7000 Series (HD9880)",
+            "title": "ثانياً: Philips Combi 7000 Series (HD9880)",
             "price": "متوسط السعر المتداول: 1,599 ريال سعودي",
             "img": "https://m.media-amazon.com/images/I/71gV4eU1h-L._AC_SL1500_.jpg",
             "specs": [
@@ -350,7 +401,7 @@ else:
         }
         p3 = {
             "tier": "فئة التحكم بالروائح والمطابخ المغلقة",
-            "title": "Instant Vortex Plus Dual ClearCook (140-3095)",
+            "title": "ثالثاً: Instant Vortex Plus Dual ClearCook (140-3095)",
             "price": "متوسط السعر المتداول: 749 ريال سعودي",
             "img": "https://m.media-amazon.com/images/I/71s8L5qj0kL._AC_SL1500_.jpg",
             "specs": [
@@ -369,12 +420,12 @@ else:
         winner_name = "Ninja Foodi FlexBasket 10.4L (AF500ME)"
         base_price = 899
 
-    # الفئة 5: محرك التوليد الذكي لأي جهاز منزلي آخر (ثلاجات، مكانس، مكرويف، قدور، كوايات...)
+    # الفئة 6 التلقائية: لأي جهاز أو أداة منزلية أخرى
     else:
         cat_title = f"أفضل وأقوى موديلات ({raw_query}) في السعودية - أعلى جودة وماركات معتمدة"
         p1 = {
             "tier": "الفئة الأولى: الخيار الرائد والأعلى جودة (Top Brand Flagship)",
-            "title": f"الإصدار الاحترافي الأعلى جودة ومواصفات من: {raw_query}",
+            "title": f"أولاً: الإصدار الاحترافي الأعلى جودة ومواصفات من: {raw_query}",
             "price": "متوسط السعر الفاخر: 1,250 - 1,890 ريال سعودي",
             "img": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=600&auto=format&fit=crop&q=80",
             "specs": [
@@ -385,7 +436,7 @@ else:
         }
         p2 = {
             "tier": "الفئة المتوازنة: الأكثر مبيعاً وأقوى قيمة مقابل السعر",
-            "title": f"الموديل الأكثر مبيعاً وتقييماً في عروض السعودية: {raw_query}",
+            "title": f"ثانياً: الموديل الأكثر مبيعاً وتقييماً في عروض السعودية: {raw_query}",
             "price": "السعر الحالي في عروض أمازون: 680 - 950 ريال سعودي",
             "img": "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=600&auto=format&fit=crop&q=80",
             "specs": [
@@ -396,7 +447,7 @@ else:
         }
         p3 = {
             "tier": "الفئة الاقتصادية المعتمدة (Best Budget Value)",
-            "title": f"الخيار الاقتصادي العملي المطابق للمواصفات: {raw_query}",
+            "title": f"ثالثاً: الخيار الاقتصادي العملي المطابق للمواصفات: {raw_query}",
             "price": "متوسط السعر الاقتصادي: 290 - 450 ريال سعودي",
             "img": "https://images.unsplash.com/photo-1588854337221-4cf9fa96059c?w=600&auto=format&fit=crop&q=80",
             "specs": [
@@ -414,7 +465,7 @@ else:
         winner_name = f"أقوى صفقة مختارة لـ ({raw_query})"
         base_price = 799
 
-    # دالة موحدة لعرض المنتجات
+    # دالة موحدة لعرض كروت المنتجات
     def render_card(prod):
         with st.container(border=True):
             col_img, col_txt = st.columns([1, 2.5])
@@ -429,7 +480,7 @@ else:
 
     st.markdown("---")
     
-    # عرض الموديلات
+    # عرض المنتجات
     render_card(p1)
     render_card(p2)
     render_card(p3)
@@ -512,8 +563,8 @@ else:
         </div>
         """, unsafe_allow_html=True)
 
-    # 7. تجهيز روابط المتاجر المباشرة بحسب الكلمة المبحوث عنها بدقة
-    encoded_search = urllib.parse.quote(raw_query)
+    # 7. تجهيز روابط الشراء المباشرة بدقة للسلعة المبحوث عنها
+    encoded_search = urllib.parse.quote(winner_name)
     amazon_affiliate_url = f"https://www.amazon.sa/s?k={encoded_search}&tag={AMAZON_TAG}"
     noon_url = f"https://www.noon.com/saudi-ar/search/?q={encoded_search}"
 
@@ -535,7 +586,7 @@ else:
     col_buy, col_share = st.columns(2)
 
     with col_buy:
-        st.markdown(f"**🛍️ الشراء المباشر لأفضل عروض:** `{raw_query}`")
+        st.markdown(f"**🛍️ الشراء المباشر لأفضل عروض:** `{winner_name}`")
         st.markdown(f'<a href="{amazon_affiliate_url}" target="_blank" class="btn-amazon">🛒 فتح نتائج السلعة في أمازون السعودية</a>', unsafe_allow_html=True)
         st.markdown(f'<a href="{noon_url}" target="_blank" class="btn-noon">🟡 فتح نتائج السلعة في نون السعودية</a>', unsafe_allow_html=True)
 
