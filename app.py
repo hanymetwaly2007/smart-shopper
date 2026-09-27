@@ -1,7 +1,7 @@
 import streamlit as st
 import urllib.parse
 
-# 1. العنوان الموجه لأكثر الكلمات بحثاً في محركات البحث (SEO Title)
+# 1. إعداد الصفحة والكلمات المفتاحية لمحركات البحث (SEO)
 st.set_page_config(
     page_title="أقوى عروض وتخفيضات الأجهزة المنزلية في السعودية | مقارنة الأسعار وخصم البنوك",
     page_icon="🔥",
@@ -119,13 +119,13 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 3. العنوان الرئيسي والنص التعريفي الغني بالكلمات الأكثر بحثاً
+# 3. العنوان الرئيسي والنص التعريفي المخصص لمحركات البحث
 st.title("🔥 أقوى عروض وتخفيضات الأجهزة الكهربائية والمنزلية في السعودية")
 
 st.markdown("""
 <div class="seo-banner">
     <b>دليلك الذكي لأفضل عروض وتخفيضات الأجهزة في السعودية:</b> 
-    مقارنة دقيقة وشاملة لأفضل الأجهزة المنزلية (قلايات هوائية، غسالات أطباق، أجهزة مطبخ) ومطابقة مواصفات الجودة السعودية SASO. 
+    مقارنة دقيقة وشاملة لأفضل الأجهزة المنزلية (قلايات هوائية، خلاطات ومحضرات طعام، غسالات صحون) ومطابقة مواصفات الجودة السعودية SASO. 
     نبحث لك عن أقل سعر في <b>أمازون السعودية، نون، وإكسترا</b>، مع حساب الخصم المباشر لبطاقات <b>مصرف الراجحي، البنك الأهلي SNB، البنك السعودي الفرنسي BSF، ومصرف الإنماء</b> لنضمن لك أقوى صفقة توفير.
 </div>
 """, unsafe_allow_html=True)
@@ -134,14 +134,29 @@ st.markdown("""
 AMAZON_TAG = "habebadeals-21"
 APP_URL = "https://deals-radar-habeba.streamlit.app"
 
-# 5. واجهة البحث واختيار البنك
+# 5. إدارة حالة البحث لضمان تفاعل الصفحة ديناميكياً
+if "search_term" not in st.session_state:
+    st.session_state.search_term = "قلاية هوائية"
+
+def update_search(new_term):
+    st.session_state.search_term = new_term
+
+# أزرار التنقل السريع بلمسة واحدة
+st.markdown("**⚡ تصفح سريع لأقوى الفئات طلباً:**")
+col_b1, col_b2, col_b3 = st.columns(3)
+with col_b1:
+    st.button("🍟 قلايات هوائية عائلية", on_click=update_search, args=("قلاية هوائية",), use_container_width=True)
+with col_b2:
+    st.button("🥤 خلاطات ومحضرات طعام", on_click=update_search, args=("خلاط كهربائي",), use_container_width=True)
+with col_b3:
+    st.button("🍽️ غسالات صحون أوتوماتيك", on_click=update_search, args=("غسالة صحون",), use_container_width=True)
+
 col_search, col_bank = st.columns([3, 2])
 
 with col_search:
     search_query = st.text_input(
         "🔎 ابحث عن الجهاز للمقارنة واكتشاف أقوى خصم:",
-        value="أفضل قلاية هوائية دبل زون",
-        placeholder="مثال: غسالة صحون بوش، قلاية نينجا، شاشة 65 بوصة..."
+        key="search_term"
     )
 
 with col_bank:
@@ -160,146 +175,257 @@ with col_bank:
 
 analyze_btn = st.button("🚀 فحص المواصفات واستخراج أقوى عرض وتخفيض", type="primary", use_container_width=True)
 
-# 6. قسم النتائج والتحليل الفني الشامل
-if analyze_btn or search_query:
-    st.markdown("---")
-    
-    # أولاً: الموديل الأول
-    st.markdown("""
-    <div class="product-box">
-        <div class="product-title">أولاً: Philips Combi 7000 Series (HD9880)</div>
-        <div class="price-tag">متوسط السعر المتداول: 1,599 ريال سعودي</div>
-        <ul>
-            <li><b>السعة الفعالة:</b> 8.3 لتر (سلة فردية عملاقة تتسع لوجبة عائلية كاملة).</li>
-            <li><b>القوة الكهربائية:</b> 2200 واط متوافقة مع الجهد الكهربائي السعودي (230V / 60Hz).</li>
-            <li><b>التقنية الحصرية:</b> مسبار حراري ذكي مدمج (Food Thermometer) لقياس درجة نضج اللحوم من الداخل بدقة بالغة مع اتصال مباشر بتطبيق NutriU عبر الواي فاي.</li>
-            <li><b>التقييم:</b> الفئة الأعلى في دقة الطهي، لكن سعرها مرتفع نسبياً وتعتمد على منطقة طهي واحدة بدون فاصل.</li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
+# 6. تجهيز بيانات الأجهزة بناءً على كلمة البحث (تفاعل فوري)
+query_clean = search_query.strip().lower()
 
-    # ثانياً: الموديل الثاني
-    st.markdown("""
-    <div class="product-box">
-        <div class="product-title">ثانياً: Ninja Foodi FlexBasket 10.4L (AF500ME)</div>
-        <div class="price-tag">السعر الحالي بأمازون (عرض اليوم الوطني): 899 ريال سعودي (بدلاً من 1,499)</div>
-        <ul>
-            <li><b>السعة الفعالة:</b> 10.4 لتر مع نظام المقسم الذكي (تحويل بين درجين منفصلين 5.2 لتر لكل درج أو درج واحد عملاق 10.4 لتر).</li>
-            <li><b>القوة الكهربائية:</b> 2470 واط تدعم تسخيناً فائق السرعة ومطابقة لمعايير كفاءة الطاقة والمقابس السعودية SASO.</li>
-            <li><b>التقنية الحصرية:</b> تقنية FlexBasket التي تمنح مرونة طهي صنفين مختلفين في نفس الوقت أو طهي وجبة ضخمة (دجاجتين كاملتين مع خضار) دفعة واحدة.</li>
-            <li><b>التقييم:</b> الخيار الأكثر توازناً وعملية للعائلات بفضل المرونة المزدوجة وسعر العرض الاستثنائي الحالي.</li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
+# الحالة أ: خلاطات ومحضرات طعام
+if any(w in query_clean for w in ["خلاط", "عجان", "محضر", "براون", "عصير", "سموذي"]):
+    category_title = "أفضل خلاطات ومحضرات طعام في السعودية"
+    p1 = {
+        "title": "أولاً: Braun MultiQuick 9 Hand Blender (MQ9147X)",
+        "price_desc": "متوسط السعر المتداول: 599 ريال سعودي",
+        "specs": [
+            "<b>القوة والأداء:</b> 1200 واط تمنح أداءً فائقاً في هرس وسحق أقسى المكونات.",
+            "<b>التقنية الحصرية:</b> شفرات ActiveBlade تتحرك عمودياً لطحن المكونات الأكثر صلابة بنسبة 40% جهد أقل، مع تقنية لمنع تناثر السوائل.",
+            "<b>الملحقات:</b> ملحق محضر طعام، خفاقة خفق، ومفرمة صغيرة للمكسرات والبصل.",
+            "<b>التقييم:</b> الخيار رقم 1 لعشاق الطبخ السريع والصلصات والشوربات دون استهلاك مساحة في المطبخ."
+        ]
+    }
+    p2 = {
+        "title": "ثانياً: Ninja Foodi 3-in-1 Food Processor & Blender (BN800ME)",
+        "price_desc": "السعر الحالي في عروض أمازون: 649 ريال سعودي (بدلاً من 899 ريال)",
+        "specs": [
+            "<b>القوة والسعة:</b> موتور بقوة 1200 واط مع وعاء محضر طعام ضخم 1.8 لتر، وإبريق خفق 2.1 لتر، وكوبين سموذي مع أغطية شرب.",
+            "<b>التقنية الحصرية:</b> تقنية Auto-iQ الذكية التي تحتوي على برامج لمسة واحدة مسبقة الضبط لإعداد العصائر والتقطيع والعجن التلقائي.",
+            "<b>الاستخدام المتعدد:</b> جهاز متكامل يغنيك عن شراء خلاط ومفرمة وعجانة بشكل منفصل.",
+            "<b>التقييم:</b> الفائز المطلق في التنوع وسحق الثلج وتحضير وجبات العائلة الكبيرة."
+        ]
+    }
+    p3 = {
+        "title": "ثالثاً: Philips Core Series 5000 (HR3573)",
+        "price_desc": "متوسط السعر المتداول: 289 ريال سعودي",
+        "specs": [
+            "<b>القوة والسعة:</b> 1000 واط مع دورق زجاجي مقاوم للكسر والحرارة بسعة 2 لتر.",
+            "<b>التقنية الحصرية:</b> تقنية ProBlend Crush المزودة بـ 6 شفرات حادة تسحق الثلج بمرتين أسرع من الخلاطات التقليدية.",
+            "<b>التقييم:</b> أفضل خيار اقتصادي وعملي جداً للعصائر اليومية والسموذي والميزانيات المحدودة."
+        ]
+    }
+    table_md = """
+| اسم الموديل | القوة الكهربائية | السعة الرئيسية | التقنية الأبرز | متوسط السعر المتداول | الميزة التنافسية |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Braun MultiQuick 9** | 1200 واط | ملحقات متعددة | شفرات ActiveBlade عمودية | 599 ر.س | خفيف، احترافي للشوربات وخلط الأطعمة بالوعاء مباشرة |
+| **Ninja Foodi 3-in-1 (BN800)** | 1200 واط | 2.1 لتر + 1.8 لتر | برامج Auto-iQ الآلية | 649 ر.س (عرض حالي) | جهاز متكامل (خلاط + محضر طعام + سموذي) في جهاز واحد |
+| **Philips Series 5000** | 1000 واط | 2 لتر زجاجي | شفرات ProBlend Crush | 289 ر.س | اقتصادي ومثالي لسحق الثلج والعصائر اليومية |
+"""
+    winner_name = "Ninja Foodi 3-in-1 Blender & Food Processor (BN800ME)"
+    base_price = 649
 
-    # ثالثاً: الموديل الثالث
-    st.markdown("""
-    <div class="product-box">
-        <div class="product-title">ثالثاً: Instant Vortex Plus Dual ClearCook (140-3095)</div>
-        <div class="price-tag">متوسط السعر المتداول: 749 ريال سعودي</div>
-        <ul>
-            <li><b>السعة الفعالة:</b> 7.6 لتر مقسمة على درجين منفصلين تماماً (3.8 لتر لكل درج).</li>
-            <li><b>القوة الكهربائية:</b> 1700 واط اقتصادية في استهلاك الطاقة ومطابقة للمواصفات القياسية.</li>
-            <li><b>التقنية الحصرية:</b> نافذة رؤية شفافة ClearCook مع إضاءة داخلية لمتابعة الطعام دون فتح الدرج، بالإضافة لفلاتر كربون مدمجة (OdorErase) لامتصاص الروائح والأدخنة.</li>
-            <li><b>التقييم:</b> ممتازة للمطابخ المغلقة ومحبي التحكم بالروائح والميزانيات الاقتصادية، مع سعة إجمالية أصغر مقارنة بالمنافسين.</li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
+# الحالة ب: غسالات صحون
+elif any(w in query_clean for w in ["غسالة صحون", "غسالة اطباق", "صحون", "اطباق", "بوش", "بيكو"]):
+    category_title = "أفضل غسالات صحون في السعودية ومطابقة مواصفات SASO"
+    p1 = {
+        "title": "أولاً: Bosch Serie 4 Free-Standing (SMS46GI01E)",
+        "price_desc": "متوسط السعر المتداول: 2,499 ريال سعودي",
+        "specs": [
+            "<b>السعة والأداء:</b> 12 مكان تخزين، صناعة ألمانية/تركية معتمدة وفق أعلى كفاءة طاقة سعودية.",
+            "<b>التقنية الحصرية:</b> نظام حماية الزجاج الدقيق ومحرك EcoSilence Drive الهادئ للغاية وطويل الأمد بدون فحمات.",
+            "<b>التقييم:</b> الفئة الأولى في الاعتمادية ونظافة وتجفيف الأطباق مع عمر افتراضي طويل."
+        ]
+    }
+    p2 = {
+        "title": "ثانياً: Midea 14 Place Settings Freestanding (WQP14J7633)",
+        "price_desc": "السعر الحالي في عروض أمازون: 1,299 ريال سعودي (بدلاً من 1,699)",
+        "specs": [
+            "<b>السعة والأداء:</b> 14 مكان تخزين واسع مع رف ثالث مخصص لأدوات المائدة والملاعق.",
+            "<b>التقنية الحصرية:</b> ميزة الغسيل المزدوج بنصف الحمولة لتوفير استهلاك الماء والكهرباء، مع برنامج التعقيم بدرجة حرارة 70 مئوية.",
+            "<b>التقييم:</b> القيمة الأعلى مقابل السعر بالسوق السعودي وأكثر موديل مبيعاً لخدمات الضمان الممتازة."
+        ]
+    }
+    p3 = {
+        "title": "ثالثاً: Beko 14 Place Settings (DFN05320W)",
+        "price_desc": "متوسط السعر المتداول: 1,149 ريال سعودي",
+        "specs": [
+            "<b>السعة والأداء:</b> 14 مكان تخزين بـ 5 برامج غسيل مختلفة.",
+            "<b>التقنية الحصرية:</b> تقنية الحماية من تسرب المياه ومرونة تعديل الرف العلوي للأواني الكبيرة.",
+            "<b>التقييم:</b> الخيار الاقتصادي الأفضل للعائلات بميزانية في متناول اليد."
+        ]
+    }
+    table_md = """
+| اسم الموديل | عدد الأماكن | مستوى الضجيج | كفاءة الطاقة | متوسط السعر المتداول | الميزة التنافسية |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Bosch Serie 4** | 12 مكان | 46 ديسيبل (فائق الهدوء) | فئة ممتازة | 2,499 ر.س | متانة خامات استثنائية ونظام تجفيف مثالي |
+| **Midea 14 Place** | 14 مكان | 49 ديسيبل | فئة ممتازة SASO | 1,299 ر.س (تخفيض حالي) | 14 مكان + رف ثالث للملاعق بأفضل سعر |
+| **Beko 14 Place** | 14 مكان | 50 ديسيبل | معتمد | 1,149 ر.س | سعر اقتصادي وبرامج غسيل سريعة |
+"""
+    winner_name = "Midea 14 Place Settings Dishwasher"
+    base_price = 1299
 
-    st.markdown("---")
-
-    # رابعاً: جدول المقارنة الفني الشامل
-    st.subheader("رابعاً: جدول المقارنة الفني الشامل (أفضل قلاية هوائية في السعودية)")
-    st.markdown("""
+# الحالة ج (الافتراضية): القلايات الهوائية
+else:
+    category_title = "أفضل قلاية هوائية في السعودية"
+    p1 = {
+        "title": "أولاً: Philips Combi 7000 Series (HD9880)",
+        "price_desc": "متوسط السعر المتداول: 1,599 ريال سعودي",
+        "specs": [
+            "<b>السعة الفعالة:</b> 8.3 لتر (سلة فردية عملاقة تتسع لوجبة عائلية كاملة).",
+            "<b>القوة الكهربائية:</b> 2200 واط متوافقة مع الجهد الكهربائي السعودي (230V / 60Hz).",
+            "<b>التقنية الحصرية:</b> مسبار حراري ذكي مدمج (Food Thermometer) لقياس درجة نضج اللحوم من الداخل بدقة بالغة مع اتصال مباشر بتطبيق NutriU عبر الواي فاي.",
+            "<b>التقييم:</b> الفئة الأعلى في دقة الطهي، لكن سعرها مرتفع نسبياً وتعتمد على منطقة طهي واحدة بدون فاصل."
+        ]
+    }
+    p2 = {
+        "title": "ثانياً: Ninja Foodi FlexBasket 10.4L (AF500ME)",
+        "price_desc": "السعر الحالي بأمازون (عرض اليوم الوطني): 899 ريال سعودي (بدلاً من 1,499)",
+        "specs": [
+            "<b>السعة الفعالة:</b> 10.4 لتر مع نظام المقسم الذكي (تحويل بين درجين منفصلين 5.2 لتر لكل درج أو درج واحد عملاق 10.4 لتر).",
+            "<b>القوة الكهربائية:</b> 2470 واط تدعم تسخيناً فائق السرعة ومطابقة لمعايير كفاءة الطاقة والمقابس السعودية SASO.",
+            "<b>التقنية الحصرية:</b> تقنية FlexBasket التي تمنح مرونة طهي صنفين مختلفين في نفس الوقت أو طهي وجبة ضخمة (دجاجتين كاملتين مع خضار) دفعة واحدة.",
+            "<b>التقييم:</b> الخيار الأكثر توازناً وعملية للعائلات بفضل المرونة المزدوجة وسعر العرض الاستثنائي الحالي."
+        ]
+    }
+    p3 = {
+        "title": "ثالثاً: Instant Vortex Plus Dual ClearCook (140-3095)",
+        "price_desc": "متوسط السعر المتداول: 749 ريال سعودي",
+        "specs": [
+            "<b>السعة الفعالة:</b> 7.6 لتر مقسمة على درجين منفصلين تماماً (3.8 لتر لكل درج).",
+            "<b>القوة الكهربائية:</b> 1700 واط اقتصادية في استهلاك الطاقة ومطابقة للمواصفات القياسية.",
+            "<b>التقنية الحصرية:</b> نافذة رؤية شفافة ClearCook مع إضاءة داخلية لمتابعة الطعام دون فتح الدرج، بالإضافة لفلاتر كربون مدمجة (OdorErase) لامتصاص الروائح والأدخنة.",
+            "<b>التقييم:</b> ممتازة للمطابخ المغلقة ومحبي التحكم بالروائح والميزانيات الاقتصادية، مع سعة إجمالية أصغر مقارنة بالمنافسين."
+        ]
+    }
+    table_md = """
 | اسم الموديل | السعة الفعالة | القوة الكهربائية | التقنية الأبرز | متوسط السعر المتداول | الميزة التنافسية الحصرية |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Philips Combi 7000 (HD9880)** | 8.3 لتر (منطقة واحدة) | 2200 واط | الذكاء الاصطناعي ومسبار الحرارة | 1,599 ر.س | أدق استواء للحوم بفضل المسبار الذكي والاتصال بالإنترنت |
 | **Ninja FlexBasket (AF500ME)** | 10.4 لتر (1 أو 2 درج) | 2470 واط | التحويل الذكي للمساحة FlexBasket | 899 ر.س (تخفيض حالي) | مرونة غير محدودة لطهي وجبات عائلية ضخمة أو صنفين منفصلين |
 | **Instant Vortex Dual (140-3095)** | 7.6 لتر (درجين منفصلين) | 1700 واط | فلاتر الكربون ومنع الروائح | 749 ر.س | بيئة مطبخ خالية من الروائح مع إمكانية مراقبة الطعام بالكامل |
-""")
+"""
+    winner_name = "Ninja Foodi FlexBasket 10.4L (AF500ME)"
+    base_price = 899
 
-    st.markdown("---")
+# 7. عرض الأقسام من أولاً إلى خامساً
+st.markdown("---")
 
-    # خامساً: الصفقة الرابحة الحاسمة
-    st.subheader("خامساً: أقوى صفقة رابحة وتخفيض (أفضل قيمة مقابل السعر)")
-    
-    target_product = "Ninja Foodi FlexBasket 10.4L (AF500ME)"
-    base_price = 899  # السعر المحدث طبقاً لعروض أمازون
+# أولاً
+st.markdown(f"""
+<div class="product-box">
+    <div class="product-title">{p1['title']}</div>
+    <div class="price-tag">{p1['price_desc']}</div>
+    <ul>
+        {"".join([f"<li>{s}</li>" for s in p1['specs']])}
+    </ul>
+</div>
+""", unsafe_allow_html=True)
 
-    if "جميع البنوك" in selected_bank:
-        st.markdown(f"""
-        <div class="deal-card">
-            <h4 style="color: #28a745; margin-top: 0;">🏆 الفائز بأقوى عرض وتخفيض: {target_product}</h4>
-            <p>السعر الأساسي الحالي في أمازون: <b>{base_price} ريال</b> (تخفيض هائل بنسبة 40%).</p>
-            <p><b>جدول مقارنة الأسعار بحسب خصومات بطاقات البنوك السعودية:</b></p>
-            <table style="width:100%; border-collapse: collapse; text-align: right; margin-bottom: 15px;">
-                <tr style="background-color: #e8f5e9;">
-                    <th style="padding: 8px; border: 1px solid #c8e6c9;">البنك / البطاقة</th>
-                    <th style="padding: 8px; border: 1px solid #c8e6c9;">كود / تفاصيل الخصم</th>
-                    <th style="padding: 8px; border: 1px solid #c8e6c9;">السعر النهائي بعد التخفيض</th>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><b>البنك السعودي الفرنسي BSF</b></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">كود <code>BSF20</code> (خصم 100 ر.س) / <code>BSF25</code> لبرايم (خصم 150 ر.س)</td>
-                    <td style="padding: 8px; border: 1px solid #ddd; color: #d93025; font-weight: bold;">749 - 799 ريال</td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><b>مصرف الراجحي</b></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">خصم مباشر إضافي 100 ر.س</td>
-                    <td style="padding: 8px; border: 1px solid #ddd; color: #d93025; font-weight: bold;">799 ريال</td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><b>البنك الأهلي SNB</b></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">خصم مباشر إضافي 100 ر.س</td>
-                    <td style="padding: 8px; border: 1px solid #ddd; color: #d93025; font-weight: bold;">799 ريال</td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><b>مصرف الإنماء</b></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">خصم إضافي 75 ر.س</td>
-                    <td style="padding: 8px; border: 1px solid #ddd; color: #d93025; font-weight: bold;">824 ريال</td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;"><b>بدون بطاقة بنكية (كاش)</b></td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">سعر العرض المباشر بأمازون</td>
-                    <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">899 ريال</td>
-                </tr>
-            </table>
-        </div>
-        """, unsafe_allow_html=True)
-        net_price = 799
-        discount_desc = "خصومات البنوك المتعددة حتى 150 ريال"
-    else:
-        discount_val = 0
-        if "BSF" in selected_bank or "الفرنسي" in selected_bank or "الراجحي" in selected_bank or "الأهلي" in selected_bank:
-            discount_val = 100
-        elif "الإنماء" in selected_bank:
-            discount_val = 75
-        elif "الرياض" in selected_bank:
-            discount_val = 50
+# ثانياً
+st.markdown(f"""
+<div class="product-box">
+    <div class="product-title">{p2['title']}</div>
+    <div class="price-tag">{p2['price_desc']}</div>
+    <ul>
+        {"".join([f"<li>{s}</li>" for s in p2['specs']])}
+    </ul>
+</div>
+""", unsafe_allow_html=True)
 
-        net_price = base_price - discount_val
-        discount_desc = f"توفير {discount_val} ريال مع بطاقتك البنكية"
+# ثالثاً
+st.markdown(f"""
+<div class="product-box">
+    <div class="product-title">{p3['title']}</div>
+    <div class="price-tag">{p3['price_desc']}</div>
+    <ul>
+        {"".join([f"<li>{s}</li>" for s in p3['specs']])}
+    </ul>
+</div>
+""", unsafe_allow_html=True)
 
-        st.markdown(f"""
-        <div class="deal-card">
-            <h4 style="color: #28a745; margin-top: 0;">🏆 الفائز بأقوى عرض وتخفيض: {target_product}</h4>
-            <ul>
-                <li><b>السعر في التخفيضات الحالية:</b> {base_price} ريال سعودي (بدلاً من 1,499 ريال).</li>
-                <li><b>السعر الصافي التقريبي بعد خصم البنك:</b> <span style="font-size: 1.3rem; font-weight: 800; color: #d93025;">{net_price} ريال سعودي</span> ({discount_desc}).</li>
-                <li><b>ملاحظة:</b> إذا كنت تستخدم بطاقة الفرنسي BSF مع برايم استخدم كود <code>BSF25</code> لخصم 150 ريال.</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
+st.markdown("---")
 
-    # 7. تجهيز روابط المتاجر والمشاركة
-    encoded_search = urllib.parse.quote(target_product)
-    amazon_affiliate_url = f"https://www.amazon.sa/s?k={encoded_search}&tag={AMAZON_TAG}"
-    noon_url = f"https://www.noon.com/saudi-ar/search/?q={encoded_search}"
-    
-    wa_message = f"""🔥 أقوى عروض وتخفيضات الأجهزة المنزلية بأمازون السعودية!
+# رابعاً: جدول المقارنة
+st.subheader(f"رابعاً: جدول المقارنة الفني الشامل ({category_title})")
+st.markdown(table_md)
 
-الجهاز: {target_product}
-السعر بالعرض: {base_price} ريال (وفرت 40%)
+st.markdown("---")
+
+# خامساً: الصفقة الرابحة وحسابات البنوك
+st.subheader("خامساً: أقوى صفقة رابحة وتخفيض (أفضل قيمة مقابل السعر)")
+
+if "جميع البنوك" in selected_bank:
+    p_french = max(base_price - 100, 0)
+    p_rajhi = max(base_price - 100, 0)
+    p_inma = max(base_price - 75, 0)
+    net_price = p_french
+
+    st.markdown(f"""
+    <div class="deal-card">
+        <h4 style="color: #28a745; margin-top: 0;">🏆 الفائز بأقوى عرض وتخفيض: {winner_name}</h4>
+        <p>السعر الأساسي الحالي بالعرض: <b>{base_price} ريال</b>.</p>
+        <p><b>جدول مقارنة الأسعار بحسب خصومات بطاقات البنوك السعودية:</b></p>
+        <table style="width:100%; border-collapse: collapse; text-align: right; margin-bottom: 15px;">
+            <tr style="background-color: #e8f5e9;">
+                <th style="padding: 8px; border: 1px solid #c8e6c9;">البنك / البطاقة</th>
+                <th style="padding: 8px; border: 1px solid #c8e6c9;">كود / تفاصيل الخصم</th>
+                <th style="padding: 8px; border: 1px solid #c8e6c9;">السعر النهائي بعد التخفيض</th>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #ddd;"><b>البنك السعودي الفرنسي BSF</b></td>
+                <td style="padding: 8px; border: 1px solid #ddd;">كود <code>BSF20</code> (خصم 100 ر.س) / <code>BSF25</code> لبرايم</td>
+                <td style="padding: 8px; border: 1px solid #ddd; color: #d93025; font-weight: bold;">{p_french} ريال</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #ddd;"><b>مصرف الراجحي</b></td>
+                <td style="padding: 8px; border: 1px solid #ddd;">خصم مباشر إضافي 100 ر.س</td>
+                <td style="padding: 8px; border: 1px solid #ddd; color: #d93025; font-weight: bold;">{p_rajhi} ريال</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #ddd;"><b>البنك الأهلي SNB</b></td>
+                <td style="padding: 8px; border: 1px solid #ddd;">خصم مباشر إضافي 100 ر.س</td>
+                <td style="padding: 8px; border: 1px solid #ddd; color: #d93025; font-weight: bold;">{p_rajhi} ريال</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #ddd;"><b>مصرف الإنماء</b></td>
+                <td style="padding: 8px; border: 1px solid #ddd;">خصم إضافي 75 ر.س</td>
+                <td style="padding: 8px; border: 1px solid #ddd; color: #d93025; font-weight: bold;">{p_inma} ريال</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; border: 1px solid #ddd;"><b>بدون بطاقة بنكية (كاش)</b></td>
+                <td style="padding: 8px; border: 1px solid #ddd;">سعر العرض المباشر بأمازون</td>
+                <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">{base_price} ريال</td>
+            </tr>
+        </table>
+    </div>
+    """, unsafe_allow_html=True)
+else:
+    discount_val = 0
+    if "BSF" in selected_bank or "الفرنسي" in selected_bank or "الراجحي" in selected_bank or "الأهلي" in selected_bank:
+        discount_val = 100
+    elif "الإنماء" in selected_bank:
+        discount_val = 75
+    elif "الرياض" in selected_bank:
+        discount_val = 50
+
+    net_price = max(base_price - discount_val, 0)
+
+    st.markdown(f"""
+    <div class="deal-card">
+        <h4 style="color: #28a745; margin-top: 0;">🏆 الفائز بأقوى عرض وتخفيض: {winner_name}</h4>
+        <ul>
+            <li><b>السعر في التخفيضات الحالية:</b> {base_price} ريال سعودي.</li>
+            <li><b>السعر الصافي التقريبي بعد خصم البنك:</b> <span style="font-size: 1.3rem; font-weight: 800; color: #d93025;">{net_price} ريال سعودي</span> (توفير {discount_val} ريال).</li>
+            <li><b>ملاحظة:</b> إذا كنت تستخدم بطاقة الفرنسي BSF مع برايم استخدم كود <code>BSF25</code> لخصم أكبر.</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
+# 8. تجهيز روابط المتاجر والمشاركة التفاعلية
+encoded_search = urllib.parse.quote(winner_name)
+amazon_affiliate_url = f"https://www.amazon.sa/s?k={encoded_search}&tag={AMAZON_TAG}"
+noon_url = f"https://www.noon.com/saudi-ar/search/?q={encoded_search}"
+
+wa_message = f"""🔥 أقوى عروض وتخفيضات الأجهزة المنزلية بأمازون السعودية!
+
+الجهاز: {winner_name}
+السعر بالعرض: {base_price} ريال
 السعر بعد خصم البنك: يصل إلى {net_price} ريال تقريباً!
 
 فحص ومقارنة العروض والخصومات:
@@ -307,17 +433,17 @@ if analyze_btn or search_query:
 
 رابط الشراء المباشر من أمازون:
 {amazon_affiliate_url}"""
-    
-    wa_url = f"https://api.whatsapp.com/send?text={urllib.parse.quote(wa_message)}"
 
-    # 8. أزرار الشراء والمشاركة
-    col_buy, col_share = st.columns(2)
+wa_url = f"https://api.whatsapp.com/send?text={urllib.parse.quote(wa_message)}"
 
-    with col_buy:
-        st.markdown(f"**🛍️ الشراء المباشر للصفقة الرابحة:** `{target_product}`")
-        st.markdown(f'<a href="{amazon_affiliate_url}" target="_blank" class="btn-amazon">🛒 فتح السلعة في أمازون</a>', unsafe_allow_html=True)
-        st.markdown(f'<a href="{noon_url}" target="_blank" class="btn-noon">🟡 فتح السلعة في نون</a>', unsafe_allow_html=True)
+# 9. أزرار الشراء والمشاركة
+col_buy, col_share = st.columns(2)
 
-    with col_share:
-        st.markdown("**📲 نشر التوفير (مشاركة تسوّق نفسها):**")
-        st.markdown(f'<a href="{wa_url}" target="_blank" class="btn-whatsapp">🟢 مشاركة هذه الصفقة فوراً عبر واتساب</a>', unsafe_allow_html=True)
+with col_buy:
+    st.markdown(f"**🛍️ الشراء المباشر للصفقة الرابحة:** `{winner_name}`")
+    st.markdown(f'<a href="{amazon_affiliate_url}" target="_blank" class="btn-amazon">🛒 فتح السلعة في أمازون</a>', unsafe_allow_html=True)
+    st.markdown(f'<a href="{noon_url}" target="_blank" class="btn-noon">🟡 فتح السلعة في نون</a>', unsafe_allow_html=True)
+
+with col_share:
+    st.markdown("**📲 نشر التوفير (مشاركة تسوّق نفسها):**")
+    st.markdown(f'<a href="{wa_url}" target="_blank" class="btn-whatsapp">🟢 مشاركة هذه الصفقة فوراً عبر واتساب</a>', unsafe_allow_html=True)
