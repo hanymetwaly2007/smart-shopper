@@ -1,6 +1,5 @@
 import streamlit as st
 import urllib.parse
-import os
 
 # 1. إعداد الصفحة والكلمات المفتاحية لمحركات البحث (SEO)
 st.set_page_config(
@@ -31,29 +30,41 @@ st.markdown("""
         padding: 15px;
         border-radius: 10px;
         margin-bottom: 25px;
-        font-size: 0.92rem;
+        font-size: 0.95rem;
         color: #495057;
         line-height: 1.6;
     }
-    
-    .deal-card {
+
+    .product-box {
         background-color: #ffffff;
-        border: 2px solid #28a745;
-        border-radius: 12px;
-        padding: 20px;
-        margin: 20px 0;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 18px;
+        margin-bottom: 18px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.03);
     }
     
-    .deal-badge {
-        background-color: #28a745;
-        color: white;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 0.85rem;
+    .product-title {
+        font-size: 1.15rem;
         font-weight: 700;
-        display: inline-block;
+        color: #1a73e8;
+        margin-bottom: 8px;
+    }
+    
+    .price-tag {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #d93025;
         margin-bottom: 10px;
+    }
+
+    .deal-card {
+        background-color: #f6fff8;
+        border: 2px solid #28a745;
+        border-radius: 12px;
+        padding: 22px;
+        margin: 25px 0;
+        box-shadow: 0 4px 8px rgba(40,167,69,0.1);
     }
 
     .btn-amazon {
@@ -114,12 +125,12 @@ st.title("🎯 رادار الصفقات الذكي وعروض البنوك | KS
 st.markdown("""
 <div class="seo-banner">
     <b>دليلك المعتمد للتسوق ومقارنة الأسعار في المملكة العربية السعودية:</b> 
-    محرك بحث لمطابقة مواصفات الأجهزة الكهربائية والمنزلية (قلايات هوائية، غسالات أطباق، أفران، صانعات القهوة) 
+    محرك بحث لمطابقة مواصفات الأجهزة الكهربائية والمنزلية (قلايات هوائية، غسالات صحون، أجهزة مطبخ) 
     مع مواصفات الهيئة السعودية للمواصفات والمقاييس (SASO)، واحتساب الخصومات التلقائية لبطاقات بنك الراجحي، الأهلي SNB، والإنماء، لمقارنة أسعار أمازون السعودية، نون، وإكسترا بأفضل قيمة شراء.
 </div>
 """, unsafe_allow_html=True)
 
-# 4. إعدادات وروابط التتبع
+# 4. إعدادات الحساب وروابط التتبع
 AMAZON_TAG = "habebadeals-21"
 APP_URL = "https://deals-radar-habeba.streamlit.app"
 
@@ -137,40 +148,75 @@ with col_bank:
     selected_bank = st.selectbox(
         "💳 بطاقتك البنكية (لحساب الخصم المباشر):",
         [
-            "مصرف الراجحي (خصم إضافي 10% - 15%)",
-            "البنك الأهلي السعودي SNB (خصم 10%)",
-            "مصرف الإنماء (كاش باك وعروض مستمرة)",
-            "بنك الرياض (خصومات دورية)",
+            "مصرف الراجحي (خصم إضافي 100 ريال)",
+            "البنك الأهلي السعودي SNB (خصم إضافي 100 ريال)",
+            "مصرف الإنماء (خصم إضافي 75 ريال)",
+            "بنك الرياض (خصم إضافي 50 ريال)",
             "بدون بطاقة بنكية (سعر الكاش العادي)"
         ]
     )
 
+# احتساب قيمة الخصم بناءً على البنك المختار
+discount_val = 0
+if "الراجحي" in selected_bank or "الأهلي" in selected_bank:
+    discount_val = 100
+elif "الإنماء" in selected_bank:
+    discount_val = 75
+elif "الرياض" in selected_bank:
+    discount_val = 50
+
 analyze_btn = st.button("🚀 فحص المواصفات ومقارنة العروض الآن", type="primary", use_container_width=True)
 
-# 6. قسم النتائج والصفقات
+# 6. قسم النتائج والتحليل الفني الشامل
 if analyze_btn or search_query:
     st.markdown("---")
     
-    # تفاصيل العرض الافتراضي الذكي المتوافق مع البحث
-    target_product = "Ninja Foodi FlexBasket 10.4L (AF500ME)"
-    if "بوش" in search_query or "غسالة" in search_query:
-        target_product = "Bosch Serie 4 Dishwasher (SMS46GI01E)"
-        base_price = 2499
-        discount_val = 150
-    elif "فيليبس" in search_query:
-        target_product = "Philips Airfryer XXL Connected (HD9285)"
-        base_price = 849
-        discount_val = 80
-    else:
-        target_product = "Ninja Foodi FlexBasket 10.4L (AF500ME)"
-        base_price = 1049
-        discount_val = 100
+    # أولاً: الموديل الأول
+    st.markdown("""
+    <div class="product-box">
+        <div class="product-title">أولاً: Philips Combi 7000 Series (HD9880)</div>
+        <div class="price-tag">متوسط السعر المتداول: 1,599 ريال سعودي</div>
+        <ul>
+            <li><b>السعة الفعالة:</b> 8.3 لتر (سلة فردية عملاقة تتسع لوجبة عائلية كاملة).</li>
+            <li><b>القوة الكهربائية:</b> 2200 واط متوافقة مع الجهد الكهربائي السعودي (230V / 60Hz).</li>
+            <li><b>التقنية الحصرية:</b> مسبار حراري ذكي مدمج (Food Thermometer) لقياس درجة نضج اللحوم من الداخل بدقة بالغة مع اتصال مباشر بتطبيق NutriU عبر الواي فاي.</li>
+            <li><b>التقييم:</b> الفئة الأعلى في دقة الطهي، لكن سعرها مرتفع نسبياً وتعتمد على منطقة طهي واحدة بدون فاصل.</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
 
-    net_price = base_price - discount_val
+    # ثانياً: الموديل الثاني
+    st.markdown("""
+    <div class="product-box">
+        <div class="product-title">ثانياً: Ninja Foodi FlexBasket 10.4L (AF500ME)</div>
+        <div class="price-tag">متوسط السعر المتداول: 1,049 ريال سعودي</div>
+        <ul>
+            <li><b>السعة الفعالة:</b> 10.4 لتر مع نظام المقسم الذكي (تحويل بين درجين منفصلين 5.2 لتر لكل درج أو درج واحد عملاق 10.4 لتر).</li>
+            <li><b>القوة الكهربائية:</b> 2470 واط تدعم تسخيناً فائق السرعة ومطابقة لمعايير كفاءة الطاقة والمقابس السعودية SASO.</li>
+            <li><b>التقنية الحصرية:</b> تقنية FlexBasket التي تمنح مرونة طهي صنفين مختلفين في نفس الوقت أو طهي وجبة ضخمة (دجاجتين كاملتين مع خضار) دفعة واحدة.</li>
+            <li><b>التقييم:</b> الخيار الأكثر توازناً وعملية للعائلات المتوسطة والكبيرة بفضل المرونة المزدوجة وسرعة التحضير.</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ثالثاً: الموديل الثالث
+    st.markdown("""
+    <div class="product-box">
+        <div class="product-title">ثالثاً: Instant Vortex Plus Dual ClearCook (140-3095)</div>
+        <div class="price-tag">متوسط السعر المتداول: 749 ريال سعودي</div>
+        <ul>
+            <li><b>السعة الفعالة:</b> 7.6 لتر مقسمة على درجين منفصلين تماماً (3.8 لتر لكل درج).</li>
+            <li><b>القوة الكهربائية:</b> 1700 واط اقتصادية في استهلاك الطاقة ومطابقة للمواصفات القياسية.</li>
+            <li><b>التقنية الحصرية:</b> نافذة رؤية شفافة ClearCook مع إضاءة داخلية لمتابعة الطعام دون فتح الدرج، بالإضافة لفلاتر كربون مدمجة (OdorErase) لامتصاص الروائح والأدخنة.</li>
+            <li><b>التقييم:</b> ممتازة للمطابخ المغلقة ومحبي التحكم بالروائح والميزانيات الاقتصادية، مع سعة إجمالية أصغر مقارنة بالمنافسين.</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("---")
 
     # رابعاً: جدول المقارنة الفني الشامل
     st.subheader("رابعاً: جدول المقارنة الفني الشامل")
-    
     st.markdown("""
 | اسم الموديل | السعة الفعالة | القوة الكهربائية | التقنية الأبرز | متوسط السعر المتداول | الميزة التنافسية الحصرية |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -184,29 +230,31 @@ if analyze_btn or search_query:
     # خامساً: الصفقة الرابحة الحاسمة
     st.subheader("خامساً: الصفقة الرابحة الحاسمة (Best Value)")
     
+    target_product = "Ninja Foodi FlexBasket 10.4L (AF500ME)"
+    base_price = 1049
+    net_price = base_price - discount_val
+
     st.markdown(f"""
-    بناءً على توازن السعر، السعة الاستيعابية الضخمة لمتطلبات العائلات في الرياض، والمرونة الفريدة التي لن تجدها في أي موديل آخر:
-    
-    * **الفائز هو:** **{target_product}**
-    * **السعر الأساسي المتداول:** {base_price:,} ريال سعودي.
-    * **السعر الصافي التقريبي (بعد تطبيق خصم البنك المحدد):** **{net_price:,} ريال سعودي**.
-    * **لماذا هي الصفقة الرابحة؟** لأنها تدمج ميزتين في جهاز واحد؛ تمنحك ميزة الأدراج المنفصلة لتفادي خلط النكهات (مثل بطاطس في جهة وسمك في جهة)، وفي ذات الوقت تمنحك درجاً عملاقاً يتسع لطعام عائلي كامل دفعة واحدة عند إزالة الفاصل الذكي.
-    """)
+    <div class="deal-card">
+        <h4 style="color: #28a745; margin-top: 0;">🏆 الفائز بأفضل قيمة مقابل السعر: {target_product}</h4>
+        <p>بناءً على توازن السعر، السعة الاستيعابية الضخمة لمتطلبات العائلات في الرياض، والمرونة الفريدة التي لن تجدها في أي موديل آخر:</p>
+        <ul>
+            <li><b>السعر الأساسي المتداول:</b> {base_price:,} ريال سعودي.</li>
+            <li><b>السعر الصافي التقريبي (بعد تطبيق خصم البنك المحدد):</b> <span style="font-size: 1.25rem; font-weight: 800; color: #d93025;">{net_price:,} ريال سعودي</span> (وفرت {discount_val} ريال).</li>
+            <li><b>لماذا هي الصفقة الرابحة؟</b> لأنها تدمج ميزتين في جهاز واحد؛ تمنحك ميزة الأدراج المنفصلة لتفادي خلط النكهات (مثل بطاطس في جهة وسمك في جهة)، وفي ذات الوقت تمنحك درجاً عملاقاً يتسع لطعام عائلي كامل دفعة واحدة عند إزالة الفاصل الذكي.</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
 
     # 7. تجهيز روابط المتاجر والمشاركة
     encoded_search = urllib.parse.quote(target_product)
-    
-    # رابط أمازون المتضمن لمعرّف الأرباح الخاص بك
     amazon_affiliate_url = f"https://www.amazon.sa/s?k={encoded_search}&tag={AMAZON_TAG}"
-    
-    # رابط نون
     noon_url = f"https://www.noon.com/saudi-ar/search/?q={encoded_search}"
     
-    # نص ورابط المشاركة عبر واتساب
     wa_message = f"""🎯 وجدت لك أفضل صفقة جهاز منزلي مطابقة للمواصفات السعودية!
 
 الجهاز: {target_product}
-السعر بعد خصم البنك: {net_price:,} ريال (وفرت {discount_val} ريال)
+السعر بعد خصم البنك: {net_price:,} ريال (توفير {discount_val} ريال)
 
 شاهد تفاصيل المقارنة والفحص من رادار الصفقات:
 {APP_URL}
@@ -216,7 +264,7 @@ if analyze_btn or search_query:
     
     wa_url = f"https://api.whatsapp.com/send?text={urllib.parse.quote(wa_message)}"
 
-    # 8. عرض أزرار الشراء والمشاركة التفاعلية
+    # 8. أزرار الشراء والمشاركة
     col_buy, col_share = st.columns(2)
 
     with col_buy:
